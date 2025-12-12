@@ -1,0 +1,125 @@
+/*! \mainpage HQC: a Key Encapsulation Mechanism
+ *
+ * @section submission_overview 1. SUBMISSION OVERVIEW
+ *
+ * In order to fully understand this submission, one should note that **HQC**
+ * is a public-key encryption scheme submitted as a **KEM** for which NIST
+ * "**standard conversion techniques**" should be applied (see NIST FAQ#13).
+ * In addition, the aforementioned **KEM** is obtained by applying a conversion
+ * technique to a **PKE**. In order to avoid any confusion, we may refer to:
+ *
+ * - **HQC-PKE IND-CPA**: HQC PKE IND-CPA scheme due to \cite AguilarMelchor2018 and \cite Aragon2020.
+ * - **HQC-KEM IND-CCA2**: HQC KEM IND-CCA2 scheme obtained by applying the
+ *   salted Fujisaki-Okamoto transformation with implicit rejection \cite Fujisaki1999, \cite Hofheinz2017, \cite Glabush2025
+ *   to the HQC PKE IND-CPA scheme. It is the implementation provided.
+ *
+ * Three parameter sets denoted respectively **HQC-1**, **HQC-3**, and **HQC-5**
+ * are provided as explained in the supporting documentation. Each parameter
+ * set folder is organized as follows:
+ *
+ * - **bin/**: Files generated during compilation
+ * - **doc/**: Technical documentation of the scheme
+ * - **lib/**: Third party libraries used
+ * - **src/**: Source code of the scheme
+ * - **doxygen.conf**: Documentation configuration file
+ * - **Makefile**: Makefile
+ *
+ * @section installation 2. INSTALLATION INSTRUCTIONS
+ *
+ * @subsection requirements 2.1 Requirements
+ *
+ * The following software and libraries are required: **make** and **gcc**. The target machine must support <b>AVX2</b> instructions.
+ *
+ * @subsection compilation 2.2 Compilation Step
+ *
+ * Let **X** denote **-1**, **-3** or **-5** depending on the parameter set considered.
+ * HQC can be compiled in three different ways:
+ *
+ * - Execute **make hqcX** to compile a working example of the scheme.
+ *   Run **bin/hqcX** to execute all the steps of the scheme and display
+ *   their respective performances.
+ * - Execute **make hqcX-kat** to compile the NIST KAT generator.
+ *   Run **bin/hqcX-kat** to generate KAT files.
+ * - Execute **make hqcX-verbose** to compile a working example of the
+ *   scheme in verbose mode. Run **bin/hqcX-verbose** to generate
+ *   intermediate values.
+ *
+ * During compilation, the following files are created inside the
+ * **bin/build** folder:
+ *
+ * - **code.o**: Functions to encode and decode messages using concatenated codes.
+ * - **crypto_memset.o**: Constant-time, compiler-resistant routines for explicit zeroization.
+ * - **fft.o**: Functions for the additive Fast Fourier Transform.
+ * - **fips202.o**: SHA3 and SHAKE functions.
+ * - **gf.o**: Functions for Galois field manipulation.
+ * - **gf2x.o**: Implementation of polynomial multiplication.
+ * - **hqc.o**: The HQC PKE IND-CPA scheme.
+ * - **kem.o**: The HQC KEM IND-CCA2 scheme.
+ * - **parsing.o**: Functions to parse public key, secret key, and ciphertext.
+ * - **reed_muller.o**: Functions to encode/decode messages using Reed-Muller codes.
+ * - **reed_solomon.o**: Functions to encode/decode messages using Reed-Solomon codes.
+ * - **symmetric.o**: Functions for PRNG, XOF, and hash functions.
+ * - **vector.o**: Functions to manipulate vectors.
+ *
+ * @section documentation 3. DOCUMENTATION
+ *
+ * @subsection doc_requirements 3.1 Requirements
+ *
+ * The following software are required: **doxygen** and **bibtex**.
+ *
+ * @subsection doc_generation 3.2 Generation Step
+ *
+ * - Run **doxygen doxygen.conf** to generate the code documentation.
+ * - Browse **doc/html/index.html** to read the documentation.
+ *
+ * @section additional_info 4. ADDITIONAL INFORMATION
+ *
+ * @subsection impl_overview 4.1 Implementation overview - HQC
+ *
+ * The **HQC-KEM IND-CCA2** scheme is specified in **api.h** and
+ * **parameters.h**, and implemented in **kem.c**. It is built upon the
+ * **HQC-PKE IND-CPA** scheme, which is defined in **hqc.h** and implemented
+ * in **hqc.c**.
+ *
+ * The HQC-PKE scheme relies on concatenated codes (see **code.h** and
+ * **code.c**), combining **Reed-Solomon** codes (**reed_solomon.h** and **reed_solomon.c**) with
+ * **Reed-Muller** codes \cite macwilliams1977theory (**reed_muller.h** and **reed_muller.c**). Roots computation for
+ * Reed-Solomon codes is performed using an additive **FFT** \cite Gao2010, \cite Bernstein2013
+ * implemented in **fft.h** and **fft.c**.
+ *
+ * The underlying Galois field arithmetic is in **gf.h** and **gf.c**.
+ * Polynomial multiplication is provided by **gf2x.h** and **gf2x.c**.
+ *
+ * Since encapsulation keys, decapsulation keys, and ciphertexts can be
+ * represented both as mathematical objects and as bit strings, the files
+ * **parsing.h** and **parsing.c** contain functions for serialization and deserialization.
+ *
+ * Randomness and hashing primitives are in **symmetric.h** and **symmetric.c**, which
+ * implement a **SHAKE-256** based **PRNG**, an **XOF**, and hash functions
+ * based on **SHA3-256** and **SHA3-512**. Finally, **fips202.h** and **fips202.c**
+ * (in **lib/fips202/**) contain a standalone SHA3 implementation.
+ *
+ * @subsection kem_keys 4.2 Encapsulation key, decapsulation key, ciphertext, and shared secret
+ *
+ * The encapsulation key **ek_kem**, decapsulation key **dk_kem**, and
+ * ciphertext **c_kem** are composed as follows:
+ *
+ * - **ek_kem = (h, s)**
+ * - **dk_kem = ((h, s), y, sigma, seed_kem)**
+ * - **c_kem = ((u, v), salt)**
+ *
+ * where **seed_kem** is the master seed of the KEM.
+ *
+ * The shared secret is derived by:
+ * 1. Hashing **ek_kem** with **SHA3-256**.
+ * 2. Concatenating the digest with **m** and the **salt**.
+ * 3. Hashing the result with **SHA3-512**.
+ * 4. Taking the first 32 bytes as the shared secret.
+ *
+ * To reduce key sizes:
+ * - **ek_kem** is compressed as (**seed_ek, s**),
+ *   where **seed_ek** is the PKE encryption key seed (used to generate **h**).
+ * - **dk_kem** is stored as (**ek_kem, dk_pke, sigma, seed_kem**),
+ *   where **dk_pke** is the seed used to generate **y**.
+ *
+ */

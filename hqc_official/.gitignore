@@ -1,0 +1,51 @@
+# Build folders
+/build*/
+/cmake-build*/
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile
+
+# ignore generated nist release
+/packaging/nist-release/
+
+# Compiled object files
+*.o
+*.obj
+
+# Static libraries
+*.a
+*.lib
+
+# Executables
+*.out
+*.elf
+*.exe
+
+# Generated test results
+/Testing/
+/test_detail.xml
+/CTestTestfile.cmake
+/DartConfiguration.tcl
+
+# Logs
+*.log
+
+# Backup / temporary files
+*~
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# IDEs / editors
+.vscode/
+.idea/
+*.user
+*.workspace
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific
+.DS_Store
+Thumbs.db

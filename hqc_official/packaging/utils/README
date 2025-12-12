@@ -1,0 +1,60 @@
++=====================================================================================+
+|                                                                                     |
+|                   ***********************************************                   |
+|                   *     POST-QUANTUM CRYPTO STANDARDIZATION     *                   |
+|                   ***********************************************                   |
+|                                                                                     |
+|=====================================================================================|
+|                                                                                     |
+|        Proposal: HQC                                                                |
+|        HQC Team (by joining date then alphabetical order):                          |
+|                  - Philippe Gaborit - University of Limoges (FR)                    |
+|                  - Carlos Aguilar Melchor - SandboxAQ (USA)                         |
+|                  - Nicolas Aragon - Naquidis Center (FR)                            |
+|                  - Slim Bettaieb - Technology Innovation Institute (UAE)            |
+|                  - Loïc Bidoux - Technology Innovation Institute (UAE)              |
+|                  - Olivier Blazy - Ecole Polytechnique (FR)                         |
+|                  - Jean-Christophe Deneuville - ENAC, Univ. of Toulouse(FR)         |
+|                  - Edoardo Persichetti - Florida Atlantic Univ. (USA)               |
+|                  - Gilles Zémor - IMB, Univ. of Bordeaux (FR)                       |
+|                  - Jurjen Bos - Worldline (NL)                                      |
+|                  - Arnaud Dion - ISAE-SUPAERO, Toulouse Univ. (FR)                  |
+|                  - Jérôme Lacan - ISAE-SUPAERO, Toulouse Univ. (FR)                 |
+|                  - Jean-Marc Robert - University of Toulon (FR)                     |
+|                  - Pascal Véron - University of Toulon (FR)                         |
+|                  - Paulo L. Barreto - Univ. of Washington Tacoma (USA)              |
+|                  - Santosh Ghosh - NVIDIA (USA)                                     |
+|                  - Shay Gueron - Univ. of Haifa / Meta (USA)                        |
+|                  - Tim Güneysu - Ruhr Univ. Bochum / DFKI (DE)                      |
+|                  - Rafael Misoczki - Meta (USA)                                     |
+|                  - Jan Richter-Brokmann - Ruhr Univ. Bochum (DE)                    |
+|                  - Nicolas Sendrier - INRIA (FR)                                    |
+|                  - Jean-Pierre Tillich - INRIA (FR)                                 |
+|                  - Valentin Vasseur - INRIA (FR)                                    |
+|                                                                                     |
+|                                                                                     |
+|        Inventors: Same as team                                                      |
+|        Developers: Same as team                                                     |
+|        Owners: Same as team                                                         |
+|                                                                                     |
++=====================================================================================+
+
+
+This archive is a proposal in response to NIST's call for proposal for standardization
+ of quantum-resistant public-key cryptographic algorithms.
+
+HQC provides POST-QUANTUM KEMs and targets NIST's
+security levels 1, 3, and 5.
+
+===============================================================================
+
+This archive is organized as follows:
+
+- KATs: Known Answer Test values and verbose outputs for each parameter set
+- Reference_Implementation: Reference implementation for each parameter set
+- Optimized_Implementation: Optimized implementation for each parameter set
+- Supporting_Documentation: Supporting documentation
+
+===============================================================================
+
+The authors did their best to make this archive complete and proper.

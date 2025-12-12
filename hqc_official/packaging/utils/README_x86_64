@@ -1,0 +1,135 @@
+
+
+-------------------------------------------------
+HQC: a Key Encapsulation Mechanism
+-------------------------------------------------
+
+
+1. SUBMISSION OVERVIEW
+----------------------
+
+In order to fully understand this submission, one should note that HQC is public-key encryption schemes submitted as a
+KEM for which NIST "standard conversion techniques" should be applied (see NIST FAQ#13). In addition, the aforementioned
+KEMs is obtained by applying a conversion technique to a PKE. In order to avoid any confusion, we may refer to:
+
+- HQC-PKE IND-CPA: HQC PKE IND-CPA scheme due to [1] and [2].
+- HQC-KEM IND-CCA2: HQC KEM IND-CCA2 scheme obtained by applying the salted Fujisaki-Okamoto transformation with
+  implicit rejection [3,4,5] to the HQC PKE IND-CPA scheme. It is the implementation provided.
+
+Three parameters sets denoted respectively HQC-1, HQC-3, and HQC-5 are provided as explained in the supporting
+documentation. Each parameter set folder is organized as follows:
+
+- bin/: Files generated during compilation
+- doc/: Technical documentation of the scheme
+- lib/: Third party libraries used
+- src/: Source code of the scheme
+- doxygen.conf: Documentation configuration file
+- Makefile: Makefile
+
+
+2. INSTALLATION INSTRUCTIONS
+----------------------------
+
+2.1 Requirements
+
+The following software and libraries are required: make and gcc. The target machine must support AVX2 instructions.
+
+2.2 Compilation Step
+
+Let X denotes -1, -3 or -5  depending on the parameter set considered. HQC can be compiled in three different ways:
+- Execute make hqcX to compile a working example of the scheme. Run bin/hqcX to execute all the steps of the scheme and
+  display theirs respective performances.
+- Execute make hqcX-kat to compile the NIST KAT generator. Run bin/hqcX-kat to generate KAT files.
+- Execute make hqcX-verbose to compile a working example of the scheme in verbose mode. Run bin/hqcX-verbose to generate
+  intermediate values.
+
+During compilation, the following files are created inside the bin/build folder:
+- code.o: Functions to encode and decode messages using concatenated codes (either in normal mode or verbose mode).
+- crypto_memset.o: Constant-time, compiler-resistant routines for explicit zeroization of sensitive memory.
+- fft.o: Functions for the additive Fast Fourier Transform.
+- fips202.o: SHA3 and SHAKE functions
+- gf.o: Functions for Galois field manipulation.
+- gf2x.o: Implementation of function that multiply polynomials.
+- hqc.o: The HQC PKE IND-CPA scheme (either in normal mode or verbose mode).
+- kem.o: The HQC KEM IND-CCA2 scheme (either in normal mode or verbose mode).
+- parsing.o: Functions to parse public key, secret key and ciphertext of the scheme.
+- reed_muller.o: Functions to encode/decode messages using Reed-Muller codes.
+- reed_solomon.o: Functions to encode/decode messages using Reed-Solomon codes (either in normal mode or verbose mode).
+- symmetric.o: Functions for pseudo-random number generator, extendable-output function (XOF) and hash functions.
+- vector.o: Functions to manipulate vectors.
+
+3. DOCUMENTATION
+----------------
+
+3.1 Requirements
+
+The following software are required: doxygen and bibtex.
+
+3.2 Generation Step
+
+- Run doxygen doxygen.conf to generate the code documentation
+- Browse doc/html/index.html to read the documentation
+
+
+4. ADDITIONAL INFORMATION
+-------------------------
+
+4.1 Implementation overview - HQC
+
+The HQC-KEM IND-CCA2 scheme is specified in the api.h and parameters.h files and implemented in kem.c. It is built upon
+the HQC-PKE IND-CPA scheme, which is defined in hqc.h and implemented in hqc.c.  The HQC-PKE scheme relies on
+concatenated codes (see code.h and code.c), combining Reed-Solomon codes (reed_solomon.h, reed_solomon.c) with
+Reed-Muller codes [6] (reed_muller.h, reed_muller.c). The roots computation required by the Reed-Solomon codes is
+performed using an additive Fast Fourier Transform (FFT) [7][8], implemented in fft.h and fft.c.  The underlying Galois
+field arithmetic is implemented in gf.h and gf.c. Polynomial multiplication is provided by gf2x.c and gf2x.h.  As
+encapsulation keys, decapsulations keys, and ciphertexts can be represented both as mathematical objects and as bit
+strings, the files parsing.h and parsing.c contain functions for serialization and deserialization between these
+formats.  Randomness and hashing primitives are provided in symmetric.h and symmetric.c, which implement a
+SHAKE-256–based pseudo-random number generator (PRNG), an extendable-output function (XOF), and hash functions based on
+SHA3-256 and SHA3-512. Finally, the files fips202.h and fips202.c (located in lib/fips202/) contain a standalone
+implementation of SHA3.
+
+4.2 Encapsulation key, decapsulation key, ciphertext and shared secret
+
+The encapsulation key ek_kem, decapsulation key dk_kem, and ciphertext c_kem are composed as follows:
+- ek_kem = (h, s)
+- dk_kem = ((h, s), y, sigma, seed_kem)
+- c_kem = ((u, v), salt)
+where seed_kem denotes the master seed of the KEM.
+
+The shared secret is derived by first hashing the encapsulation key ek_kem with SHA3-256. The resulting digest is
+ then concatenated with the message m and the salt, and the whole string is hashed again with SHA3-512. The first 32
+ bytes of this final hash are used as the shared secret.
+
+To reduce key sizes, the encapsulation key is compressed and stored as ek_kem = (seed_ek, s), where seed_ek is the seed
+ of the PKE encryption key (used to generate h). The decapsulation key is stored as
+ dk_kem = (ek_kem, dk_pke, sigma, seed_kem), where dk_PKE is the seed used to generate y.
+
+
+5. REFERENCES
+-------------
+
+[1] Carlos Aguilar-Melchor, Olivier Blazy, Jean-Christophe Deneuville, Philippe Gaborit, and Gilles Zémor. "Efficient
+encryption from random quasi-cyclic codes." IEEE Transactions on Information Theory 64, no. 5 (2018): 3927-3943.
+
+[2] Nicolas Aragon, Philippe Gaborit, and Gilles Zémor. "HQC-RMRS, an instantiation of the HQC encryption framework with
+a more efficient auxiliary error-correcting code." arXiv preprint arXiv:2005.10741 (2020).
+
+[3] Eiichiro Fujisaki, and Tatsuaki Okamoto. "Secure integration of asymmetric and symmetric encryption schemes." In
+Annual international cryptology conference, pp. 537-554. Berlin, Heidelberg: Springer Berlin Heidelberg, 1999.
+
+[4] Dennis Hofheinz, Kathrin Hövelmanns, and Eike Kiltz. "A modular analysis of the Fujisaki-Okamoto transformation." In
+Theory of Cryptography Conference, pp.  341-371. Cham: Springer International Publishing, 2017.
+
+[5] Lewis Glabush, Kathrin Hövelmanns, and Douglas Stebila. "Tight Multi-challenge Security Reductions for Key
+Encapsulation Mechanisms." Cryptology ePrint Archive (2025).
+
+[6] Florence Jessie MacWilliams, and Neil James Alexander Sloane. "The theory of error-correcting codes." Vol. 16.
+Elsevier, 1977.
+
+[7] Shuhong Gao, and Todd Mateer. "Additive fast Fourier transforms over finite fields." IEEE Transactions on
+Information Theory 56, no. 12 (2010): 6265-6272.
+
+[8] Daniel J. Bernstein, Tung Chou, and Peter Schwabe. "McBits: fast constant-time code-based cryptography." In
+International Conference on Cryptographic Hardware and Embedded Systems, pp. 250-272. Berlin, Heidelberg: Springer
+Berlin Heidelberg, 2013.
