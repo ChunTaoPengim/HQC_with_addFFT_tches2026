@@ -83,15 +83,24 @@ Choose one of three HQC parameter sets:
 
 Choose between two polynomial multiplication and encode/decode implementations:
 
-- `ref` - The official reference code, run on every platform
-- `x86_hqcteam` - Optimized x86_64 code in HQC official package
-- `m1_hqcport` - Our porting of the optimized HQC official package on Mac M1
-- `a72_hqcport` - Our porting of the optimized HQC official package on Raspberry Pi4(Cortex-a72)
-- `fft_ref` - Our proposed method reference code, run on every platform
-- `fft_x86` - Our proposed method on x86_64
-- `fft_gfni` - Our proposed method on x86_64 with GFNI instructions
-- `fft_m1` - Our proposed method on Mac m1
-- `fft_a72` - Our proposed method on Raspberry Pi4(Cortex-a72)
+- `ref` - The official reference code, run on every platform.
+Compile `src/ref`, `src/common`, `tests/`
+- `x86_hqcteam` - Optimized x86_64 code in HQC official package.
+Compile `src/x86_official`, `src/common`, `tests/`
+- `m1_hqcport` - Our porting of the optimized HQC official package on Mac M1.
+Compile `src/armv8`, `src/common`, `tests/`
+- `a72_hqcport` - Our porting of the optimized HQC official package on Raspberry Pi4(Cortex-a72).
+Compile `src/a72`, `src/armv8`, `src/common`, `tests_a72/`
+- `fft_ref` - Our proposed method reference code, run on every platform.
+Compile `src/cachekey`, `lib/bitpolymul_ref`, `src/ref`, `src/common`, `tests/`
+- `fft_x86` - Our proposed method on x86_64.
+Compile `src/cachekey`, `lib/bitpolymul_x86`, `src/code_x86`, `src/code_x86/avx2`, `src/x86_official`, `src/common`, `tests/`
+- `fft_gfni` - Our proposed method on x86_64 with GFNI instructions.
+Compile `src/cachekey`, `lib/bitpolymul_gfni`, `src/code_x86`, `src/code_x86/avx2gfni`, `src/x86_official`, `src/common`, `tests/`
+- `fft_m1` - Our proposed method on Mac m1.
+Compile `src/cachekey`, `lib/bitpolymul_m1`, `src/armv8`, `src/common`, `tests/`
+- `fft_a72` - Our proposed method on Raspberry Pi4(Cortex-a72).
+Compile `src/cachekey`, `lib/bitpolymul_a72`, `src/a72`, `src/armv8`, `src/common`, `tests_a72/`
 
 #### Testing
 
