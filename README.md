@@ -133,7 +133,7 @@ Alternatively, if your computer has the GFNI instruction set:
 ```
 If you are on Mac M1:
 ```
-./newbench.sh m1_fft result_m1fft.txt
+./newbench.sh fft_m1 result_m1fft.txt
 ```
 Or, the default is (benchmark on x86):
 ```

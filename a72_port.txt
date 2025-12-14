@@ -1,0 +1,166 @@
+========= HQC report  ==========
+current time: Mon 15 Dec 00:21:54 CST 2025
+================================
+Linux pi4 6.12.25+rpt-rpi-v8 #1 SMP PREEMPT Debian 1:6.12.25-1+rpt1 (2025-04-30) aarch64 GNU/Linux
+
+
+===== test starts: hqc-1 =====
+
+
+--- gf2x-test result ---
+
+benchmark for gf2x [17669] bits ->[277] u64 
+
+===========  benchmark vect_mul()  ================
+
+  vect_mul cycles = 301632
+XX: f2cb
+
+--- code-test result ---
+
+===========  benchmark coder  ================
+
+ RM encode cycles = 887
+ RS encode cycles = 339
+ RM decode cycles = 42732
+ RS decode cycles = 106021
+
+--- hqc-test result ---
+
+
+*********************
+**** HQC-128-128 ****
+*********************
+
+N: 17669   N1: 46   N2: 384   OMEGA: 66   OMEGA_R: 75   Failure rate: 2^-128   Sec: 128 bits
+
+
+
+secret1: 70985532cb722e97227fb69efe3ee5e2afebc286123fe55c01d152c3689502f
+secret2: 70985532cb722e97227fb69efe3ee5e2afebc286123fe55c01d152c3689502f
+
+TEST [1000] PASSED
+    keygen cycles = 416464
+       enc cycles = 819711
+       dec cycles = 1390538
+
+
+===== test starts: hqc-3 =====
+
+
+--- gf2x-test result ---
+
+benchmark for gf2x [35851] bits ->[561] u64 
+
+===========  benchmark vect_mul()  ================
+
+  vect_mul cycles = 912250
+XX: b014
+
+--- code-test result ---
+
+===========  benchmark coder  ================
+
+ RM encode cycles = 1147
+ RS encode cycles = 439
+ RM decode cycles = 72291
+ RS decode cycles = 133003
+
+--- hqc-test result ---
+
+
+*********************
+**** HQC-192-192 ****
+*********************
+
+N: 35851   N1: 56   N2: 640   OMEGA: 100   OMEGA_R: 114   Failure rate: 2^-192   Sec: 192 bits
+
+
+
+secret1: ca482ecacbcade6b78438e542d569ba6a5293e785d31d1b5f96de33e4ae3a4
+secret2: ca482ecacbcade6b78438e542d569ba6a5293e785d31d1b5f96de33e4ae3a4
+
+TEST [1000] PASSED
+    keygen cycles = 1191097
+       enc cycles = 2342217
+       dec cycles = 3735038
+
+
+===== test starts: hqc-5 =====
+
+
+--- gf2x-test result ---
+
+benchmark for gf2x [57637] bits ->[901] u64 
+
+===========  benchmark vect_mul()  ================
+
+  vect_mul cycles = 2293670
+XX: d0f8
+
+--- code-test result ---
+
+===========  benchmark coder  ================
+
+ RM encode cycles = 1718
+ RS encode cycles = 932
+ RM decode cycles = 116139
+ RS decode cycles = 296430
+
+--- hqc-test result ---
+
+
+*********************
+**** HQC-256-256 ****
+*********************
+
+N: 57637   N1: 90   N2: 640   OMEGA: 131   OMEGA_R: 149   Failure rate: 2^-256   Sec: 256 bits
+
+
+
+secret1: 532969b713b8245e97c1522c1a3ff3f75c0bb74f9964fc693a4d8ad95ef1162
+secret2: 532969b713b8245e97c1522c1a3ff3f75c0bb74f9964fc693a4d8ad95ef1162
+
+TEST [1000] PASSED
+    keygen cycles = 2797510
+       enc cycles = 5550992
+       dec cycles = 8725477
+processor	: 0
+BogoMIPS	: 108.00
+Features	: fp asimd evtstrm crc32 cpuid
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd08
+CPU revision	: 3
+
+processor	: 1
+BogoMIPS	: 108.00
+Features	: fp asimd evtstrm crc32 cpuid
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd08
+CPU revision	: 3
+
+processor	: 2
+BogoMIPS	: 108.00
+Features	: fp asimd evtstrm crc32 cpuid
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd08
+CPU revision	: 3
+
+processor	: 3
+BogoMIPS	: 108.00
+Features	: fp asimd evtstrm crc32 cpuid
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd08
+CPU revision	: 3
+
+Revision	: c03130
+Serial		: 10000000d91ff01c
+Model		: Raspberry Pi 400 Rev 1.0
