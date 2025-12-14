@@ -119,24 +119,24 @@ This will automatically record benchmark results in text files.
 
 Under main folder addfftHQC/
 ```bash
-./newbench.sh <target> <textfile.txt>
+./new_bench.sh <target> <textfile.txt>
 ```
 The `target` parameter follows the target algorithm and platform in previous sections. 
 
 For example:
 ```
-./newbench.sh fft_x86 result_fftx86.txt
+./new_bench.sh fft_x86 result_fftx86.txt
 ```
 Alternatively, if your computer has the GFNI instruction set:
 ```
-./newbench.sh fft_gfni result_fftgfni.txt
+./new_bench.sh fft_gfni result_fftgfni.txt
 ```
 If you are on Mac M1:
 ```
-./newbench.sh fft_m1 result_m1fft.txt
+./new_bench.sh fft_m1 result_m1fft.txt
 ```
 Or, the default is (benchmark on x86):
 ```
-./newbench.sh ref results.txt
+./new_bench.sh ref results.txt
 ```
 
