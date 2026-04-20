@@ -104,7 +104,7 @@ Compile `src/cachekey`, `lib/bitpolymul_a72`, `src/a72`, `src/armv8`, `src/commo
 
 #### Testing
 
-After compiling, run the following command to test and benchmark defferent components.
+After compiling, run the following command to test and benchmark different components.
 
 ```bash
 sudo ./bin/gf2x-test
@@ -114,7 +114,7 @@ sudo ./bin/hqc-test
 
 
 ## Usage
-We also provide benchmark files `benchmark.sh` for simple usage.
+We also provide benchmark files `new_bench.sh` for simple usage.
 This will automatically record benchmark results in text files.
 
 Under main folder addfftHQC/
@@ -134,6 +134,10 @@ Alternatively, if your computer has the GFNI instruction set:
 If you are on Mac M1:
 ```
 ./new_bench.sh fft_m1 result_m1fft.txt
+```
+If you are on Arm Cortex-a72:
+```
+./new_bench.sh fft_a72 result_a72fft.txt
 ```
 Or, the default is (benchmark on x86):
 ```
