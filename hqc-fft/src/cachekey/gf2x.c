@@ -29,41 +29,51 @@ error here.
 void ring_to_fftform( uint8_t *v_fft , const uint8_t *v )
 {
     uint64_t tmp1[N_PAD_U64];
+    uint64_t buffer[R_FFTFORM_BYTES/8] = {0};
 #if 17669 == PARAM_N
     for(int i=VEC_N_SIZE_BYTES/8;i<N_PAD_U64;i++) { tmp1[i] = 0; }
     memcpy( tmp1 , v , VEC_N_SIZE_BYTES );
-    polymul_17920_input( v_fft , tmp1 );
+    polymul_17920_input( buffer , tmp1 );
+    memcpy( v_fft , buffer , R_FFTFORM_BYTES );
 #elif 35851 == PARAM_N
     for(int i=VEC_N_SIZE_BYTES/8;i<N_PAD_U64;i++) { tmp1[i] = 0; }
     memcpy( tmp1 , v , VEC_N_SIZE_BYTES );
-    polymul_36864_input( v_fft , tmp1 );
+    polymul_36864_input( buffer , tmp1 );
+    memcpy( v_fft , buffer , R_FFTFORM_BYTES );
 #elif 57637 == PARAM_N
     for(int i=VEC_N_SIZE_BYTES/8;i<N_PAD_U64;i++) { tmp1[i] = 0; }
     memcpy( tmp1 , v , VEC_N_SIZE_BYTES );
-    polymul_input_transform( v_fft , tmp1 , N_PAD_U64 );
+    polymul_input_transform( buffer , tmp1 , N_PAD_U64 );
+    memcpy( v_fft , buffer , R_FFTFORM_BYTES );
 #else
 error -- no matched implementation for PARAM_N 
 #endif
+    memset( buffer , 0 , R_FFTFORM_BYTES );
 }
 
 void ring_to_fftform_rlonly( uint8_t *v_fft , const uint8_t *v )
 {
     uint64_t tmp1[N_PAD_U64];
+    uint64_t buffer[R_FFTFORM_BYTES/8] = {0};
 #if 17669 == PARAM_N
     for(int i=VEC_N_SIZE_BYTES/8;i<N_PAD_U64;i++) { tmp1[i] = 0; }
     memcpy( tmp1 , v , VEC_N_SIZE_BYTES );
-    polymul_280U64_input( v_fft , tmp1 );
+    polymul_280U64_input( buffer , tmp1 );
+    memcpy( v_fft , buffer , R_FFTFORM_BYTES );
 #elif 35851 == PARAM_N
     for(int i=VEC_N_SIZE_BYTES/8;i<N_PAD_U64;i++) { tmp1[i] = 0; }
     memcpy( tmp1 , v , VEC_N_SIZE_BYTES );
-    polymul_576U64_input( v_fft , tmp1 );
+    polymul_576U64_input( buffer , tmp1 );
+    memcpy( v_fft , buffer , R_FFTFORM_BYTES );
 #elif 57637 == PARAM_N
     for(int i=VEC_N_SIZE_BYTES/8;i<N_PAD_U64;i++) { tmp1[i] = 0; }
     memcpy( tmp1 , v , VEC_N_SIZE_BYTES );
-    polymul_input_transform( v_fft , tmp1 , N_PAD_U64 );
+    polymul_input_transform( buffer , tmp1 , N_PAD_U64 );
+    memcpy( v_fft , buffer , R_FFTFORM_BYTES );
 #else
 error -- no matched implementation for PARAM_N 
 #endif
+    memset( buffer , 0 , R_FFTFORM_BYTES );
 }
 
 
@@ -95,15 +105,15 @@ error -- no matched implementation for PARAM_N
 
 void ring_mul_fftform( uint8_t *c, const uint8_t *a, const uint8_t *b_fft )
 {
-    uint64_t a_fft[R_FFTFORM_BYTES/8];
+    uint8_t a_fft[R_FFTFORM_BYTES];
     ring_to_fftform( a_fft , a );
     ring_mul_fftformx2( c , a_fft , b_fft );
 }
 
 void ring_mul( uint8_t *c, const uint8_t *a, const uint8_t *b )
 {
-    uint64_t a_fft[R_FFTFORM_BYTES/8];
-    uint64_t b_fft[R_FFTFORM_BYTES/8];
+    uint8_t a_fft[R_FFTFORM_BYTES];
+    uint8_t b_fft[R_FFTFORM_BYTES];
     ring_to_fftform( a_fft , a );
     ring_to_fftform( b_fft , b );
     ring_mul_fftformx2( c , a_fft , b_fft );
@@ -111,9 +121,9 @@ void ring_mul( uint8_t *c, const uint8_t *a, const uint8_t *b )
 
 void ring_mul_x2( uint8_t * c1 , uint8_t * c2 , const uint8_t * a , const uint8_t * b1 , const uint8_t * b2 )
 {
-    uint64_t a_fft[R_FFTFORM_BYTES/8];
-    uint64_t b1_fft[R_FFTFORM_BYTES/8];
-    uint64_t b2_fft[R_FFTFORM_BYTES/8];
+    uint8_t a_fft[R_FFTFORM_BYTES];
+    uint8_t b1_fft[R_FFTFORM_BYTES];
+    uint8_t b2_fft[R_FFTFORM_BYTES];
     ring_to_fftform( a_fft , a );
     ring_to_fftform( b1_fft , b1 );
     ring_to_fftform( b2_fft , b2 );
@@ -148,7 +158,7 @@ error -- no matched implementation for PARAM_N
 
 void ring_mul_x2_fftform( uint8_t * c1 , uint8_t * c2 , const uint8_t * a , const uint8_t * b1_fft , const uint8_t * s_fft , const uint8_t * s )
 {
-    uint64_t a_fft[R_FFTFORM_BYTES/8];
+    uint8_t a_fft[R_FFTFORM_BYTES];
     ring_to_fftform( a_fft , a );
     ring_mul_fftformx2( c1 , a_fft , b1_fft );
     ring_mul_fftformx2_2( c2 , a_fft , s_fft , s );
