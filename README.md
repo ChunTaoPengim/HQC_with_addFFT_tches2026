@@ -1,4 +1,4 @@
-# addfftHQC
+# HQC_with_addFFT_tches2026
 HQC with addFFT polynomial multiplication
 
 ## Contents
@@ -117,7 +117,7 @@ sudo ./bin/hqc-test
 We also provide benchmark files `new_bench.sh` for simple usage.
 This will automatically record benchmark results in text files.
 
-Under main folder addfftHQC/
+Under main folder HQC_with_addFFT_tches2026/
 ```bash
 ./new_bench.sh <target> <textfile.txt>
 ```
