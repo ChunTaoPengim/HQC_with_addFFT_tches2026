@@ -4,7 +4,7 @@ endif
 
 CC := gcc
 
-CFLAGS:=-O3 -Wall -Wextra
+CFLAGS:=-O3 -std=c99 -fpermissive -Wno-error=incompatible-pointer-types -Wall -Wextra
 
 SHA3_SRC:=$(ROOT)/lib/fips202/fips202.c
 SHA3_INCLUDE:=-I $(ROOT)/lib/fips202
